@@ -63,7 +63,7 @@ public class Main {
         //Scanner scan2 = new Scanner(new File("peo.txt"));
  
         try{
-            //writing this way int the tryp block 'handles' the FileNotFoundException
+            //writing this way int the try block 'handles' the FileNotFoundException
             //File inFile = new File("peoe.txt");
             Scanner scanner = new Scanner(new File("people.txt"));
 
@@ -74,14 +74,16 @@ public class Main {
                 try{
                     int tempAge = Integer.parseInt(tokens[3]);
                     char tempType = tokens[0].toUpperCase().charAt(0);
-                    if (tempType != 'P' && tempType != 'T' && tempType != 'E' && tempType != 'S'){
+                    if (tempType != 'P' && tempType != 'T' && tempType != 'E' && tempType != 'S')
                         throw new TypeException(tempType);
-                    }
-                    else{
-                        Person tempP = new Person(tokens[0].charAt(0), tokens[1], tokens[2], tempAge);
-                        people.add(tempP);
-                    }
+                    //add test & throw exception for age (age > 0 and < 110)
+
+
+                    Person tempP = new Person(tokens[0].charAt(0), tokens[1], tokens[2], tempAge);
+                    people.add(tempP);
                 }
+                //add catch for TypeException
+
                 catch(NumberFormatException e){
                     System.out.println("Number format exception: " + e.getMessage());
                 }
@@ -105,6 +107,16 @@ public class Main {
             System.out.printf("%-4c %-15s %-15s %5d \n",p.type, p.fname, p.lname, p.age);
         }
 
+         //EXAMPLE 5: Nested method calls
+        try{
+            method1("0");
+            method1("-1");
+            method1("abc");
+        }
+        catch(Exception e){
+            System.out.println("Main: error discovered in main: " + e);
+        }
+
     }
 
     static void checkAge(int age) {
@@ -114,5 +126,29 @@ public class Main {
             System.out.println("Access granted - You are old enough!");
     }
 
+    static void method1(String str) {
+        try{
+            int value = Integer.parseInt(str);
+            if (value < 0) 
+                throw new Exception("Method 1: Value entered is less than 0.");
+            method2(value);
+            System.out.println("Method 1: after method 2 call. " );
+        }
+        catch (Exception e){
+            System.out.println("Method 1: issue found: " + e);
+            //e.printStackTrace();
+        }
+
+    }
+    static void method2(int value) {
+        try{
+            if (value == 0) 
+                throw new ArithmeticException("Method 2: Value entered is 0");
+            System.out.println("5 / " + value + " = " + (5/value));
+        }
+        catch(ArithmeticException e){
+            System.out.println("Method 2: issue found: " + e);            
+        }
+    }
 }
 
